@@ -1,0 +1,27 @@
+version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - "4444:5000"
+    expose:
+      - 4444
+  web2:
+    build: .
+    ports:
+      - "5555:5000"
+    expose:
+      - 5555
+  haproxy:
+    image: haproxy:1.7
+    container_name: my-gateway
+    restart: always
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+    depends_on:
+      - web
+      - web2
+    ports:
+      # - 8888:4444
+      # - 8888:5555
+      - 1936:1936
